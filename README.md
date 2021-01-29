@@ -1,3 +1,3 @@
 # Rabbits!
-CLicker with Flutter
+Clicker with Flutter
 work in progress :)
