@@ -1,1 +1,2 @@
-# rabbit_clicker
+# Rabbits!
+work in progress :)
