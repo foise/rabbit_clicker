@@ -1,5 +1,6 @@
-# rabbit_clicker
+# Rabbits! Clicker made with Flutter.
+work in progress :)
 
-A new Flutter project.
+
 
 
