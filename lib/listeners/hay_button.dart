@@ -14,12 +14,18 @@ class _HayButtonState extends State<HayButton> {
       builder: (context, gameModel, child) {
         return GestureDetector(
           onTapDown: (TapDownDetails details) {
-            gameModel.addHay(1);
-            gameModel.press();
-            gameModel.updateTapDetails(details);
+            if (!gameModel.pause) {
+              gameModel.addHay(1);
+              gameModel.press();
+              gameModel.updateTapDetails(details);
+            }
           },
-          onTapUp: (TapUpDetails details) => gameModel.unpress(),
-          onTapCancel: () => gameModel.unpress(),
+          onTapUp: (TapUpDetails details) {
+            if (!gameModel.pause) gameModel.unpress();
+          },
+          onTapCancel: () {
+            if (!gameModel.pause) gameModel.unpress();
+          },
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [

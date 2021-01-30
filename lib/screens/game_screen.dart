@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:rabbit_clicker/listeners/pause_button.dart';
 import 'package:rabbit_clicker/listeners/watch_view.dart';
 import 'package:rabbit_clicker/models/game_model.dart';
 import 'package:rabbit_clicker/listeners/hay_count.dart';
@@ -71,7 +72,12 @@ class _GameScreenState extends State<GameScreen> {
                       Expanded(
                         child: HayCountView(),
                       ),
-                      WatchView(),
+                      Row(
+                        children: [
+                          WatchView(),
+                          PauseButton(),
+                        ],
+                      ),
                     ],
                   ),
                 ),

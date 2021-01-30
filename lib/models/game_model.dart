@@ -11,6 +11,7 @@ class RabbitClicker extends ChangeNotifier {
   double _hayCosumptionPerSecond = 1.0;
 
   bool _tap = false;
+  bool _pause = false;
   double _tapdy;
   double _tapdx;
 
@@ -24,6 +25,7 @@ class RabbitClicker extends ChangeNotifier {
   double get hayConsumptionPerSecond => _hayCosumptionPerSecond;
 
   bool get tap => _tap;
+  bool get pause => _pause;
   double get tapdy => _tapdy;
   double get tapdx => _tapdx;
 
@@ -34,6 +36,13 @@ class RabbitClicker extends ChangeNotifier {
   RabbitClicker() {
     _watch = Stopwatch();
     getSaveData();
+  }
+
+  void setPause() {
+    if (_pause)
+      _pause = false;
+    else
+      _pause = true;
   }
 
   void getSaveData() async {
