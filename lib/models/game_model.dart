@@ -5,11 +5,13 @@ import 'package:rabbit_clicker/services/save_data.dart';
 
 class RabbitClicker extends ChangeNotifier {
   SaveData saveData;
+  double _highScore;
   double _rabbitCount = 1.0;
   double _hayCount = 100.0;
 
   double _hayCosumptionPerSecond = 1.0;
 
+  bool _lose = false;
   bool _tap = false;
   bool _pause = false;
   double _tapdy;
@@ -19,11 +21,13 @@ class RabbitClicker extends ChangeNotifier {
   Timer _timer;
   Duration _timeElapsed = Duration.zero;
 
+  double get highScore => _highScore;
   double get rabbitCount => _rabbitCount;
   double get hayCount => _hayCount;
 
   double get hayConsumptionPerSecond => _hayCosumptionPerSecond;
 
+  bool get lose => _lose;
   bool get tap => _tap;
   bool get pause => _pause;
   double get tapdy => _tapdy;
@@ -43,11 +47,29 @@ class RabbitClicker extends ChangeNotifier {
       _pause = false;
     else
       _pause = true;
+    notifyListeners();
+  }
+
+  void setLose() {
+    if (_lose)
+      _lose = false;
+    else
+      _lose = true;
+    notifyListeners();
+  }
+
+  handleLose() {
+    saveData.resetAll();
+    _lose = false;
+    _pause = false;
+    getSaveData();
+    notifyListeners();
   }
 
   void getSaveData() async {
     saveData = new SaveData();
     await saveData.readAll();
+    _highScore = saveData.highScore;
     _rabbitCount = saveData.rabbitCount;
     _hayCount = saveData.hayCount;
     _timeElapsed = saveData.timeElapsed;
@@ -62,6 +84,8 @@ class RabbitClicker extends ChangeNotifier {
     _timeElapsed += Duration(seconds: 1);
     eatHay();
     saveAll();
+    saveData.saveHighScore(_rabbitCount);
+    checkLose();
     notifyListeners();
   }
 
@@ -71,16 +95,22 @@ class RabbitClicker extends ChangeNotifier {
     notifyListeners();
   }
 
-  void stopWatch() {
-    _watch.stop();
-  }
-
   void stopTimer() {
     _timer?.cancel();
-    stopWatch();
+    _watch.stop();
     saveAll();
     print("Timer stoped");
     notifyListeners();
+  }
+
+  void checkLose() {
+    if (hayCount <= 0) {
+      stopTimer();
+      setLose();
+      setPause();
+      saveAll();
+      notifyListeners();
+    }
   }
 
   void resetTimer() {
@@ -101,7 +131,7 @@ class RabbitClicker extends ChangeNotifier {
     notifyListeners();
   }
 
-  //debug only
+  //debug
   void eatALLHay() {
     _hayCount = 0;
     notifyListeners();

@@ -7,6 +7,7 @@ import 'package:rabbit_clicker/listeners/hay_count.dart';
 import 'package:rabbit_clicker/listeners/hay_button.dart';
 import 'package:rabbit_clicker/listeners/popup_text.dart';
 import 'package:rabbit_clicker/listeners/rabbits_count.dart';
+import 'package:rabbit_clicker/screens/lose_screen.dart';
 import 'package:rabbit_clicker/screens/welcome_screen.dart';
 
 class GameScreen extends StatefulWidget {
@@ -53,43 +54,59 @@ class _GameScreenState extends State<GameScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: _onWillPop,
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text(widget.title),
-        ),
-        body: Stack(
-          children: [
-            Row(
-              children: [
-                Expanded(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      RabbitCountView(),
-                      Expanded(
-                        child: HayCountView(),
-                      ),
-                      Row(
-                        children: [
-                          WatchView(),
-                          PauseButton(),
-                        ],
-                      ),
-                    ],
+    if (!Provider.of<RabbitClicker>(context).lose) {
+      return WillPopScope(
+        onWillPop: _onWillPop,
+        child: Scaffold(
+          appBar: AppBar(
+            title: Text(widget.title),
+          ),
+          body: Stack(
+            children: [
+              Row(
+                children: [
+                  Expanded(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        RabbitCountView(),
+                        Expanded(
+                          child: HayCountView(),
+                        ),
+                        Row(
+                          children: [
+                            WatchView(),
+                            PauseButton(),
+                            FlatButton(
+                              child: Container(
+                                  child: Text("LOSE"),
+                                  height: 30,
+                                  width: 40,
+                                  color: Colors.red),
+                              onPressed: () {
+                                Provider.of<RabbitClicker>(context,
+                                        listen: false)
+                                    .eatALLHay();
+                              },
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ],
-            ),
-            PopUpText(),
-            Center(
-              child: HayButton(),
-            ),
-          ],
+                ],
+              ),
+              PopUpText(),
+              Center(
+                child: HayButton(),
+              ),
+            ],
+          ),
         ),
-      ),
-    );
+      );
+    } else {
+      return LoseScreen();
+    }
   }
 }
