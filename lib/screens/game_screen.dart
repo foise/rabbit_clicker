@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:rabbit_clicker/listeners/lose_button.dart';
 import 'package:rabbit_clicker/listeners/pause_button.dart';
+import 'package:rabbit_clicker/listeners/upgrade_list.dart';
 import 'package:rabbit_clicker/listeners/watch_view.dart';
 import 'package:rabbit_clicker/models/game_model.dart';
 import 'package:rabbit_clicker/listeners/hay_count.dart';
@@ -58,6 +60,7 @@ class _GameScreenState extends State<GameScreen> {
       return WillPopScope(
         onWillPop: _onWillPop,
         child: Scaffold(
+          drawer: UpgradeList(),
           appBar: AppBar(
             title: Text(widget.title),
           ),
@@ -78,18 +81,7 @@ class _GameScreenState extends State<GameScreen> {
                           children: [
                             WatchView(),
                             PauseButton(),
-                            FlatButton(
-                              child: Container(
-                                  child: Text("LOSE"),
-                                  height: 30,
-                                  width: 40,
-                                  color: Colors.red),
-                              onPressed: () {
-                                Provider.of<RabbitClicker>(context,
-                                        listen: false)
-                                    .eatALLHay();
-                              },
-                            ),
+                            LoseButton(),
                           ],
                         ),
                       ],

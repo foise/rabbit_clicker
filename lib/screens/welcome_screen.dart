@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rabbit_clicker/models/upgrade_model.dart';
 import 'package:rabbit_clicker/screens/game_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:rabbit_clicker/models/game_model.dart';

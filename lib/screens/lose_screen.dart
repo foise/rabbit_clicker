@@ -55,25 +55,33 @@ class _LoseScreenState extends State<LoseScreen> {
               child: Consumer<RabbitClicker>(
                 builder: (context, gameModel, child) {
                   return Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
                         "Highscore: ${gameModel.highScore.floor()}",
                         style: TextStyle(fontSize: 20),
                       ),
-                      FlatButton(
-                        child: Container(
-                          child: Text("Return"),
-                          width: 100,
-                          height: 50,
-                          color: Colors.teal,
+                      Card(
+                        color: Colors.cyan,
+                        child: FlatButton(
+                          child: Container(
+                            child: Center(
+                              child: Text(
+                                "Return",
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                            width: 100,
+                            height: 50,
+                          ),
+                          onPressed: () {
+                            gameModel.handleLose();
+                            Navigator.push(context,
+                                MaterialPageRoute(builder: (_) {
+                              return WelcomeScreen();
+                            }));
+                          },
                         ),
-                        onPressed: () {
-                          gameModel.handleLose();
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (_) {
-                            return WelcomeScreen();
-                          }));
-                        },
                       ),
                     ],
                   );

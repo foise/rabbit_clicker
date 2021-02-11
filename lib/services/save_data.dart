@@ -7,6 +7,7 @@ class SaveData {
   double rabbitCount;
   double hayCount;
   Duration timeElapsed;
+  bool newGame;
 
   SaveData({this.rabbitCount, this.timeElapsed, this.hayCount});
 
@@ -23,23 +24,20 @@ class SaveData {
     prefs.setDouble("rabbitCount", rabbitCount);
     prefs.setDouble("hayCount", hayCount);
     prefs.setInt("timeElapsedInSeconds", time.inSeconds);
+    prefs.setBool("newGame", false);
   }
 
   Future<void> readAll() async {
     prefs = await SharedPreferences.getInstance();
     if (!prefs.containsKey("rabbitCount")) {
-      rabbitCount = 1.0;
-      hayCount = 100;
-      timeElapsed = Duration.zero;
-      prefs.setDouble("rabbitCount", rabbitCount);
-      prefs.setDouble("hayCount", hayCount);
-      prefs.setInt("timeElapsedInSeconds", timeElapsed.inSeconds);
+      resetAll();
     } else {
       highScore = prefs.getDouble("highScore") ?? 0;
       rabbitCount = prefs.getDouble("rabbitCount") ?? rabbitCount;
       hayCount = prefs.getDouble("hayCount") ?? hayCount;
       timeElapsed = Duration(seconds: prefs.getInt("timeElapsedInSeconds")) ??
           timeElapsed;
+      newGame = prefs.getBool("newGame");
     }
   }
 
@@ -51,6 +49,16 @@ class SaveData {
     hayCount = 100;
     prefs.setInt("timeElapsedInSeconds", 0);
     timeElapsed = Duration(seconds: 0);
-    saveAll(1, 100, Duration(seconds: 0));
+    prefs.setBool("newGame", true);
+  }
+
+  Future<void> getNewGame() async {
+    prefs = await SharedPreferences.getInstance();
+    if (!prefs.containsKey("newGame")) {
+      prefs.setBool("newGame", true);
+      newGame = true;
+    } else {
+      newGame = prefs.getBool("newGame");
+    }
   }
 }

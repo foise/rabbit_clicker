@@ -21,6 +21,8 @@ class RabbitClicker extends ChangeNotifier {
   Timer _timer;
   Duration _timeElapsed = Duration.zero;
 
+  bool _newGame;
+
   double get highScore => _highScore;
   double get rabbitCount => _rabbitCount;
   double get hayCount => _hayCount;
@@ -37,28 +39,24 @@ class RabbitClicker extends ChangeNotifier {
   Timer get timer => _timer;
   Duration get timeElapsed => _timeElapsed;
 
+  bool get newGame => _newGame;
+
   RabbitClicker() {
     _watch = Stopwatch();
     getSaveData();
   }
 
   void setPause() {
-    if (_pause)
-      _pause = false;
-    else
-      _pause = true;
+    _pause ? _pause = false : _pause = true;
     notifyListeners();
   }
 
   void setLose() {
-    if (_lose)
-      _lose = false;
-    else
-      _lose = true;
+    _lose ? _lose = false : _lose = true;
     notifyListeners();
   }
 
-  handleLose() {
+  void handleLose() {
     saveData.resetAll();
     _lose = false;
     _pause = false;
@@ -73,6 +71,7 @@ class RabbitClicker extends ChangeNotifier {
     _rabbitCount = saveData.rabbitCount;
     _hayCount = saveData.hayCount;
     _timeElapsed = saveData.timeElapsed;
+    _newGame = saveData.newGame;
     notifyListeners();
   }
 

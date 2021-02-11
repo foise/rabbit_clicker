@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:rabbit_clicker/models/game_model.dart';
-import 'package:rabbit_clicker/screens/game_screen.dart';
+import 'package:rabbit_clicker/models/upgrade_model.dart';
 import 'package:provider/provider.dart';
 import 'package:rabbit_clicker/screens/welcome_screen.dart';
 
 void main() {
   runApp(
-    ChangeNotifierProvider(
-      create: (context) => RabbitClicker(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => RabbitClicker()),
+        ChangeNotifierProvider(create: (_) => UpgradeModel()),
+      ],
       child: MyApp(),
     ),
   );
